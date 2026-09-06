@@ -20,7 +20,7 @@ app.use(cookieParser());
 // app.use(cookieParser())
 
 // end Point
-app.post("/api", (req,res)=>{
+app.get("/", (req,res)=>{
   res.send("Hello from backend")
 })
 app.use("/admin",adminRouter)
