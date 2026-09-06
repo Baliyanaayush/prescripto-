@@ -32,9 +32,9 @@ const iniatilizeConnection = async()=>{
     connectCloudinary()
   console.log("MongoDB and Cloudinary is connected")
 
-  app.listen(process.env.PORT_NUMBER, ()=>{
-    console.log(`Listening at port Number ${process.env.PORT_NUMBER}`)
-})
+  // app.listen(process.env.PORT_NUMBER, ()=>{
+  //   console.log(`Listening at port Number ${process.env.PORT_NUMBER}`)
+// })
   } catch (error) {
     console.log("the Error occured",error)
   }
