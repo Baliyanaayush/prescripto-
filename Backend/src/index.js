@@ -11,9 +11,12 @@ const doctorRouter = require('./routes/doctorroute');
 
 
 app.use(cors({
-  origin:"http://localhost:5173",
-  credentials:true
-}))
+  origin: [
+    "http://localhost:5173",
+    "https://doc-prescripto.netlify.app"
+  ],
+  credentials: true
+}));
 
 app.use(express.json())
 app.use(cookieParser());
