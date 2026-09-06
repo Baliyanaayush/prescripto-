@@ -43,3 +43,4 @@ const iniatilizeConnection = async()=>{
 iniatilizeConnection()
 
 
+module.exports = app
