@@ -11,68 +11,80 @@ const crypto = require("crypto");
 // to resister user
 const registerUser = async (req, res) => {
   try {
-    const { firstname, emailId, password } = req.body
-    req.body.role = "user"
+    console.log("REGISTER BODY:", req.body);
+
+    const { firstname, emailId, password } = req.body;
 
     if (!firstname || !emailId || !password) {
       return res.status(400).json({
         success: false,
-        message: "Please provide all required fields"
-      })
+        message: "Please provide all required fields",
+      });
     }
-    const hashedPassword = await bcrypt.hash(password, 10)
 
     if (!validator.isEmail(emailId)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid Email"
-      })
+        message: "Invalid Email",
+      });
     }
+
     if (!validator.isStrongPassword(password)) {
       return res.status(400).json({
         success: false,
-        message: "Weak Password"
-      })
+        message: "Weak Password",
+      });
     }
 
-    //create user
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await UserModel.create({
       firstname,
       emailId,
       password: hashedPassword,
-      role: req.body.role
-    })
-    const token = jwt.sign({ _id: user._id, emailId: user.emailId, role: user.role }, process.env.SECRET_KEY, { expiresIn: "1h" })
+      role: "user",
+    });
 
+    const token = jwt.sign(
+      {
+        _id: user._id,
+        emailId: user.emailId,
+        role: user.role,
+      },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "1h",
+      }
+    );
 
-res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none",
-  maxAge: 60 * 60 * 1000,
-});
-    res.json({
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 60 * 60 * 1000,
+    });
+
+    return res.status(201).json({
       success: true,
-      token,
       message: "User Register Successfully",
       user: {
         _id: user._id,
         firstname: user.firstname,
         emailId: user.emailId,
-        role: user.role
-
-      }
-    })
-
+        role: user.role,
+      },
+    });
 
   } catch (error) {
+    console.error("REGISTER ERROR:", error);
+
     return res.status(500).json({
       success: false,
       message: error.message,
+      error: error.stack,
     });
   }
-
-}
+};
 
 const loginUser = async (req, res) => {
   const { emailId, password } = req.body
