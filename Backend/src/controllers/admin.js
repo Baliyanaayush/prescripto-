@@ -56,10 +56,7 @@ const addDoctor = async (req, res) => {
 const adminLogin = async (req, res) => {
     try {
         const { emailId, password } = req.body;
-        if (
-            emailId === process.env.ADMIN_EMAIL &&
-            password === process.env.ADMIN_PASSWORD
-        ) {
+        if (emailId === process.env.ADMIN_EMAIL &&password === process.env.ADMIN_PASSWORD) {
             const token = jwt.sign(
                 { emailId },
                 process.env.SECRET_KEY,

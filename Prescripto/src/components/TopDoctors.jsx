@@ -14,14 +14,21 @@ const TopDoctors = () => {
      dispatch(getAllDoctors())
     },[dispatch])
 
-    if(!doctors)
-    {
-      return (
+    if (loading) {
+  return (
     <div className="text-center py-10">
       Loading Doctors...
     </div>
   );
-    }
+}
+
+if (!doctors || doctors.length === 0) {
+  return (
+    <div className="text-center py-10">
+      No doctors available right now.
+    </div>
+  );
+}
   return (
     <div className="bg-white py-16 px-6 md:px-12 lg:px-20">
       {/* Heading */}

@@ -2,17 +2,36 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosClient from "./utils/axiosClient";
 
 
+
 export const getAllDoctors = createAsyncThunk(
-    "/doctor/alldoctors",
-    async(_,{rejectWithValue})=>{
-        try {
-            const {data} = await axiosClient.get("/doctor/alldoctors")
-            return data.doctors
-        } catch (error) {
-            
-        }
+  "/doctor/alldoctors",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axiosClient.get("/doctor/alldoctors");
+
+      if (!data.success) {
+        return rejectWithValue({
+          message: data.message || "Failed to fetch doctors",
+        });
+      }
+
+      return data.doctors;
+    } catch (error) {
+      console.error(
+        "getAllDoctors error:",
+        error.response?.data || error.message
+      );
+
+      return rejectWithValue({
+        message:
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to fetch doctors",
+      });
     }
-)
+  }
+);
+
 
 const initialState = {
   doctors: [],

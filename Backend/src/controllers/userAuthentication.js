@@ -235,9 +235,7 @@ const bookAppointment = async (req, res) => {
     const userId = req.user._id;
 
     // Find doctor
-    const docData = await DoctorModel
-      .findById(docId)
-      .select("-password");
+    const docData = await DoctorModel.findById(docId).select("-password");
 
     if (!docData) {
       return res.status(404).json({
